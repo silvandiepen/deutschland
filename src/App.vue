@@ -35,5 +35,7 @@ body {
 }
 .content {
 	padding: 2rem;
+	max-width: 720px;
+	margin: auto;
 }
 </style>
