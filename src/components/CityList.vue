@@ -5,8 +5,10 @@
 			:key="idx"
 			:class="[plate.code.length == 1 ? 'short' : 'long']"
 		>
-			<span>{{ plate.code }}</span>
-			<span>{{ plate.city }}</span>
+			<router-link :to="`/license-plates/${plate.code.toLowerCase()}#map`">
+				<span>{{ plate.code }}</span>
+				<span>{{ plate.city }}</span>
+			</router-link>
 		</li>
 	</ul>
 </template>
@@ -16,20 +18,27 @@ export default {
 	props: {
 		data: {
 			type: Array,
-			default: () => [],
+			default: () => []
 		},
 		searchType: {
 			type: String,
-			default: "",
-		},
-	},
+			default: ''
+		}
+	}
 };
 </script>
 
 <style lang="scss">
 .city-list {
 	li {
-		display: flex;
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+		a {
+			color: inherit;
+			display: flex;
+			text-decoration: none;
+		}
 		margin-top: 1em;
 		& + li.short {
 			margin-top: 1.5em;

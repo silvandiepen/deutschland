@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<div id="nav">
-			<router-link to="/">Home</router-link>
+			<router-link to="/Home">Home</router-link>
 			<router-link to="/about">About</router-link>
 			<router-link to="/license-plates">License Plates</router-link>
 		</div>
@@ -16,8 +16,8 @@ body {
 	padding: 0;
 }
 #app {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 		sans-serif;
 }
 
@@ -33,9 +33,17 @@ body {
 		text-decoration: none;
 	}
 }
+ul,
+li {
+	margin: 0;
+	padding: 0;
+}
 .content {
 	padding: 2rem;
 	max-width: 720px;
 	margin: auto;
+}
+* {
+	box-sizing: border-box;
 }
 </style>
