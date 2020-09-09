@@ -3,7 +3,7 @@
 		<div id="nav">
 			<router-link to="/Home">Home</router-link>
 			<router-link to="/about">About</router-link>
-			<router-link to="/license-plates">License Plates</router-link>
+			<router-link to="/">License Plates</router-link>
 		</div>
 		<router-view />
 		<button class="button--update" v-if="updateExists" @click="refreshApp">
@@ -93,5 +93,6 @@ li {
 	background-color: #111;
 	padding: 1em;
 	color: white;
+	border-radius: 0.25em;
 }
 </style>
