@@ -6,8 +6,43 @@
 			<router-link to="/license-plates">License Plates</router-link>
 		</div>
 		<router-view />
+		<button class="button--update" v-if="updateExists" @click="refreshApp">
+			New version available! Click to update
+		</button>
 	</div>
 </template>
+<script>
+export default {
+	data() {
+		return {
+			refreshing: false,
+			registration: null,
+			updateExists: false
+		};
+	},
+	created() {
+		document.addEventListener('swUpdated', this.showRefreshUI, { once: true });
+		navigator.serviceWorker.addEventListener('controllerchange', () => {
+			if (this.refreshing) return;
+			this.refreshing = true;
+			window.location.reload();
+		});
+	},
+	methods: {
+		showRefreshUI(e) {
+			this.registration = e.detail;
+			this.updateExists = true;
+		},
+		refreshApp() {
+			this.updateExists = false;
+			if (!this.registration || !this.registration.waiting) {
+				return;
+			}
+			this.registration.waiting.postMessage('skipWaiting');
+		}
+	}
+};
+</script>
 
 <style lang="scss">
 html,
@@ -45,5 +80,18 @@ li {
 }
 * {
 	box-sizing: border-box;
+}
+.button--update {
+	position: fixed;
+	bottom: 2em;
+	width: auto;
+	max-width: 100vw;
+	border: none;
+	font-size: 1em;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #111;
+	padding: 1em;
+	color: white;
 }
 </style>

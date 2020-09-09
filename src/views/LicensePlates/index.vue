@@ -11,29 +11,36 @@
 				/>
 			</div>
 		</div>
-		<div class="panels">
-			<section class="search-plates">
-				<div class="content" v-if="searchTerm.length > 0">
-					<div class="results" v-if="searchedPlatesCodes.length > 0">
-						<h3>Code</h3>
-						<CityList :data="searchedPlatesCodes" />
-					</div>
-					<p class="no-result" v-else-if="searchTerm.length < 4">
-						No Places found with code {{ searchTerm }}
-					</p>
-					<div class="results" v-if="searchedPlatesCity.length > 0">
-						<h3>City</h3>
-						<CityList :data="searchedPlatesCity" />
-					</div>
-					<p class="no-result" v-else>
-						No Places found with name {{ searchTerm }}
-					</p>
+		<section class="search-plates">
+			<div class="content" v-if="searchTerm.length > 0">
+				<div class="results" v-if="searchedPlatesCodes.length > 0">
+					<h3>Code</h3>
+					<CityList :data="searchedPlatesCodes" />
 				</div>
-			</section>
-			<section class="maps" id="map">
-				<CityMap :location="location"></CityMap>
-			</section>
-		</div>
+				<p class="no-result" v-else-if="searchTerm.length < 4">
+					No Places found with code {{ searchTerm }}
+				</p>
+				<div class="results" v-if="searchedPlatesCity.length > 0">
+					<h3>City</h3>
+					<CityList :data="searchedPlatesCity" />
+				</div>
+				<p class="no-result" v-else>
+					No Places found with name {{ searchTerm }}
+				</p>
+			</div>
+		</section>
+		<section
+			class="detail"
+			id="map"
+			:class="{ 'detail--active': showMap }"
+			@click="showMap != showMap"
+		>
+			<CityMap :location="location"></CityMap>
+			<div class="detail__content">
+				{{ location }}
+			</div>
+			<button class="detail__close" @click="showMap = false"></button>
+		</section>
 		<section class="all-plates">
 			<div class="content">
 				<h3>All Codes</h3>
@@ -68,7 +75,8 @@ export default {
 		return {
 			searchTerm: '',
 			allPlates: PlatesData.plates,
-			location: ''
+			location: '',
+			showMap: false
 		};
 	},
 	computed: {
@@ -91,6 +99,7 @@ export default {
 	},
 	methods: {
 		setCurrentLocation(code) {
+			this.showMap = true;
 			this.location = this.allPlates.find(
 				(plate) => flatName(plate.code) === flatName(code)
 			)['city'];
@@ -166,6 +175,88 @@ export default {
 		}
 	}
 }
+
+.detail {
+	position: fixed;
+	bottom: 2em;
+	right: 2em;
+	width: 4em;
+	height: 4em;
+	border-radius: 2em;
+	z-index: 10;
+	background-color: white;
+	overflow: hidden;
+	transition: all 0.3s;
+	&--active {
+		width: 50vw;
+		height: 50vh;
+		@media screen and (max-width: 960px) {
+			width: calc(100vw - 4em);
+		}
+		.detail__content {
+			transform: scale(1);
+			.map__container {
+				pointer-events: all;
+			}
+		}
+		.detail__close {
+			transform: translate(25%, 25%) scale(1);
+		}
+	}
+	&__content {
+		position: absolute;
+		bottom: 1em;
+		left: 1em;
+		background-color: white;
+		box-shadow: 0 0 0 0.075em black;
+		border-left: 0.5em solid blue;
+		color: black;
+		font-size: 2em;
+		padding: 0.125em;
+		border-radius: 0.125em;
+		z-index: 1;
+		transform: scale(0);
+		transition: transform 0.3s 0.3s cubic-bezier(0, 1.25, 0.75, 1.25);
+		font-family: Nummerschild;
+		.map__container {
+			pointer-events: none;
+		}
+	}
+	&__close {
+		position: absolute;
+		left: 0;
+		top: 0;
+		transform: translate(25%, 25%);
+		background-color: black;
+		width: 4em;
+		height: 4em;
+		border-radius: 2em;
+		transform: translate(25%, 25%) scale(0);
+		transition: transform 0.3s 0.3s cubic-bezier(0, 1.25, 0.75, 1.25);
+		border: none;
+		&:focus {
+			outline: none;
+		}
+		&::before,
+		&::after {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 2em;
+			height: 0.125em;
+			background-color: white;
+			content: '';
+			display: block;
+		}
+		&::before {
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
+		&::after {
+			transform: translate(-50%, -50%) rotate(-45deg);
+		}
+	}
+}
+
 .no-result {
 	opacity: 0.5;
 }

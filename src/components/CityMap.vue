@@ -85,12 +85,14 @@ export default {
 <style lang="scss">
 .map {
 	&__container {
-		padding: 4vw;
 		color: red;
 	}
 	&__wrapper {
-		min-height: 50vh;
-		width: 100%;
+		width: 50vw;
+		height: 50vh;
+		@media screen and (max-width: 960px) {
+			width: calc(100vw - 4em);
+		}
 		border-radius: 1em;
 		overflow: hidden;
 	}

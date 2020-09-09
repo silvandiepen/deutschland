@@ -38,6 +38,9 @@ export default {
 			color: inherit;
 			display: flex;
 			text-decoration: none;
+			&:hover {
+				color: skyblue;
+			}
 		}
 		margin-top: 1em;
 		& + li.short {
@@ -49,8 +52,12 @@ export default {
 
 		span:first-child {
 			display: block;
+			font-family: Nummerschild;
+			font-size: 1.5em;
 			width: 4rem;
-			font-weight: bold;
+		}
+		span:last-child {
+			opacity: 0.75;
 		}
 	}
 }
